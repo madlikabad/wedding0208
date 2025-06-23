@@ -6,12 +6,22 @@
     <title>Юрий & Ксения | Свадьба</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
         body {
             font-family: 'Montserrat', sans-serif;
             background: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
             color: #3e2d26;
             margin: 0;
             padding: 0;
+            opacity: 0;
+            animation: fadeIn 2s ease forwards;
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
         }
         .container {
             max-width: 900px;
@@ -21,6 +31,17 @@
             border: 6px double #d4b29c;
             box-shadow: 0 0 30px rgba(0,0,0,0.1);
             border-radius: 20px;
+            animation: slideUp 1.5s ease;
+        }
+        @keyframes slideUp {
+            from {
+                transform: translateY(40px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
         header {
             text-align: center;
@@ -41,6 +62,7 @@
         }
         section {
             margin-bottom: 40px;
+            animation: fadeIn 1s ease;
         }
         h2 {
             font-family: 'Playfair Display', serif;
@@ -56,16 +78,21 @@
             text-decoration: none;
             font-size: 16px;
             border-radius: 8px;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
         .btn:hover {
             background-color: #b96e63;
+            transform: scale(1.05);
         }
         .gallery img {
             width: 100%;
             margin-bottom: 15px;
             border-radius: 8px;
             border: 2px solid #d4b29c;
+            transition: transform 0.3s ease;
+        }
+        .gallery img:hover {
+            transform: scale(1.02);
         }
         p, li {
             font-size: 1.1em;
@@ -80,6 +107,12 @@
             margin: 30px 0;
             color: #6c4a3d;
         }
+        .countdown {
+            text-align: center;
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            color: #7a5b50;
+        }
     </style>
 </head>
 <body>
@@ -89,8 +122,11 @@
         <p class="date">2 августа 2025</p>
     </header>
 
+    <div class="countdown" id="countdown"></div>
+
     <section class="invitation">
-        
+        <p class="quote">"Любовь — это когда ты не можешь заснуть, потому что реальность наконец-то лучше, чем сон."</p>
+
         <p>Дорогие наши! Мы счастливы поделиться с вами важным днём нашей жизни — нашей свадьбой. Этот день будет наполнен улыбками, объятиями, воспоминаниями и, конечно, теплом ваших сердец.</p>
 
         <p><strong>📜 Церемония:</strong><br>
@@ -120,6 +156,36 @@
         Ниже — несколько атмосферных образов:</p>
     </section>
 
+    <section>
+        <h2>🕰 Программа дня</h2>
+        <ul>
+            <li><strong>10:20</strong> — Церемония в ЗАГСе</li>
+            <li><strong>12:00</strong> — Перерыв / логистика</li>
+            <li><strong>15:30</strong> — Встреча гостей в доме</li>
+            <li><strong>16:30</strong> — Тосты и угощения</li>
+            <li><strong>19:00</strong> — Музыка, танцы и звёзды ✨</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>🗺 Как добраться</h2>
+        <p>Дом находится по адресу: СНТ Сарженка, участок 373.<br>Координаты: <a href="https://www.google.com/maps?q=60.194115,30.246714" target="_blank">60.194115, 30.246714</a></p>
+        <ul>
+            <li>🚗 На машине: через Выборгское шоссе, ~40 минут от СПб</li>
+            <li>🚌 Общественным транспортом: метро Озерки → автобус до Сарженки</li>
+            <li>📍 В навигатор: “СНТ Сарженка, участок 373”</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>📞 Контакты</h2>
+        <p>Если у вас есть вопросы — просто напишите или позвоните нам:</p>
+        <ul>
+            <li>💌 Ксюша: <a href="tel:+79111234567">+7 911 123 45 67</a></li>
+            <li>📱 Юра: <a href="tel:+79876543210">+7 987 654 32 10</a></li>
+        </ul>
+    </section>
+
     <section class="gallery">
         <h2>Вдохновение</h2>
         <img src="photo_2025-06-21_23-55-16.jpg" alt="Мужской стиль ретро">
@@ -127,5 +193,23 @@
         <img src="photo_2025-06-21_23-55-17 (2).jpg" alt="Свадебное вдохновение">
     </section>
 </div>
+
+<script>
+    const countdown = document.getElementById("countdown");
+    const weddingDate = new Date("2025-08-02T10:00:00").getTime();
+    const timer = setInterval(() => {
+        const now = new Date().getTime();
+        const diff = weddingDate - now;
+        if (diff <= 0) {
+            countdown.innerHTML = "Сегодня наш день 💍";
+            clearInterval(timer);
+            return;
+        }
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        countdown.innerHTML = `До свадьбы осталось: <strong>${days}</strong> дн. <strong>${hours}</strong> ч. <strong>${minutes}</strong> мин.`;
+    }, 60000);
+</script>
 </body>
 </html>
